@@ -776,6 +776,15 @@ func marshalVarbind(pdu *SnmpPDU) ([]byte, error) {
 			intBytes = []byte{byte(pdu.Value.(int))}
 		case int:
 			intBytes = marshalInt16(value)
+		case int16:
+			intBytes = make([]byte, 2, 2)
+			binary.BigEndian.PutUint16(intBytes, uint16(value))
+		case int32:
+			intBytes = make([]byte, 4, 4)
+			binary.BigEndian.PutUint32(intBytes, uint32(value))
+		case int64:
+			intBytes = make([]byte, 8, 8)
+			binary.BigEndian.PutUint64(intBytes, uint64(value))
 		default:
 			return nil, fmt.Errorf("Unable to marshal PDU Integer; not byte or int.")
 		}
